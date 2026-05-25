@@ -1,0 +1,965 @@
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+// --- Utility SVG Icons (Inline for safety & compilation reliability) ---
+const ArrowLeft = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const ArrowRight = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const SparkleIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M18 6 6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const SendIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="m22 2-7 20-4-9-9-4Z" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M22 2 11 13" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const ViewGridIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <rect x="3" y="3" width="7" height="7" />
+    <rect x="14" y="3" width="7" height="7" />
+    <rect x="14" y="14" width="7" height="7" />
+    <rect x="3" y="14" width="7" height="7" />
+  </svg>
+);
+
+const ViewListIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
+// --- Complete Exact Script Sections ---
+const sections = [
+  {
+    id: "cover",
+    title: "JOVEYRA QUANTITATIVE HEDGE FUND",
+    subtitle: "Systemic Trading Architecture",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[50vh] relative py-12">
+        <div className="lg:col-span-8 space-y-8 text-left z-10">
+          <div className="font-mono text-[9px] tracking-[0.5em] text-zinc-400 uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            PROPOSAL BRIEF // SECURE CORE PIPELINE
+          </div>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight text-white leading-[0.95] font-light">
+            Joveyra
+          </h1>
+          <p className="font-serif italic text-lg md:text-2xl text-zinc-300 font-light max-w-2xl leading-relaxed">
+            A 100% systematic, data-driven quantitative trading firm engineered to eliminate emotional bias and secure mathematical consistency.
+          </p>
+          <div className="pt-8 flex flex-wrap gap-x-12 gap-y-6 text-[10px] font-mono text-zinc-400 uppercase tracking-widest border-t border-zinc-800 max-w-xl">
+            <div>
+              <span className="text-zinc-500 block mb-1">STAGE 01</span>
+              <span className="text-white font-medium">Prop-to-Fund Bridge</span>
+            </div>
+            <div>
+              <span className="text-zinc-500 block mb-1">STRUCTURE</span>
+              <span className="text-white font-medium">Cayman Offshore (Phase II)</span>
+            </div>
+            <div>
+              <span className="text-zinc-500 block mb-1">RISK PARADIGM</span>
+              <span className="text-white font-medium">Ex-Ante Overlay System</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Right-side geometric mathematical pattern */}
+        <div className="hidden lg:col-span-4 h-full lg:flex flex-col justify-center items-end relative pl-8 border-l border-zinc-850">
+          <div className="w-full max-w-xs aspect-square relative border border-zinc-800 rounded-sm p-6 flex flex-col justify-between overflow-hidden bg-black/50 backdrop-blur-sm">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#2a2a2a_1px,transparent_1px),linear-gradient(to_bottom,#2a2a2a_1px,transparent_1px)] bg-[size:24px_24px] opacity-30"></div>
+            <div className="absolute top-1/2 left-0 w-full h-[1px] bg-zinc-800"></div>
+            <div className="absolute left-1/2 top-0 w-[1px] h-full bg-zinc-800"></div>
+            
+            <div className="font-mono text-[8px] text-zinc-500 flex justify-between">
+              <span>[X_VAL 0.0]</span>
+              <span>[Y_VAL 1.0]</span>
+            </div>
+            <div className="flex flex-col items-center justify-center my-auto relative z-10">
+              <div className="w-20 h-20 rounded-full border border-dashed border-zinc-500 flex items-center justify-center animate-[spin_100s_linear_infinite]">
+                <div className="w-14 h-14 rounded-full border border-zinc-700 flex items-center justify-center">
+                  <div className="w-4 h-4 rounded-full bg-zinc-950 border border-zinc-400 animate-pulse"></div>
+                </div>
+              </div>
+              <span className="font-mono text-[9px] text-zinc-300 tracking-[0.3em] uppercase mt-4">ALPHA BOUNDARY</span>
+            </div>
+            <div className="font-mono text-[8px] text-zinc-500 flex justify-between">
+              <span>[SYSTEMIC]</span>
+              <span>[DEC_2026]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: "section-1",
+    title: "Section 1: Executive Summary & Core Identity",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start py-8">
+        <div className="lg:col-span-4 space-y-4">
+          <div className="font-mono text-[9px] text-zinc-400 tracking-[0.4em] uppercase">SYSTEM CORE</div>
+          <h2 className="font-serif text-3xl md:text-4xl text-white font-light leading-tight">
+            Systematic Automation
+          </h2>
+          <div className="w-16 h-[1px] bg-zinc-700 my-6"></div>
+          <p className="font-serif italic text-sm text-zinc-300 leading-relaxed">
+            Eliminating human intervention across all transactional vectors to maximize mathematical symmetry.
+          </p>
+        </div>
+        
+        <div className="lg:col-span-4 space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <h3 className="font-mono text-[10px] text-zinc-200 tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> 1.1 Core Identity
+          </h3>
+          <p className="text-zinc-300 font-sans leading-relaxed text-sm font-light">
+            Joveyra is a 100% systematic, data-driven quantitative trading firm. Unlike traditional discretionary funds, Joveyra’s entire pipeline—from alpha generation and backtesting to risk management and execution—is fully automated and algorithmic. This infrastructure eliminates emotional human bias and ensures mathematical consistency across all market conditions.
+          </p>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <h3 className="font-mono text-[10px] text-zinc-200 tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> 1.2 The Prop-to-Fund Capital Bridge
+          </h3>
+          <p className="text-zinc-300 font-sans leading-relaxed text-sm font-light">
+            To optimize early-stage capital efficiency, Joveyra’s launch strategy utilizes a proprietary trading bridge. In Phase 1, the firm deploys its systematic models across institutional prop-trading firms within the spot market. This establishes an audited live track record and generates immediate, low-risk operational cash flow to fund Joveyra's international legal structure and institutional software licensing without diluting early investor equity.
+          </p>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: "section-2",
+    title: "Section 2: Phase-by-Phase Strategic Roadmap",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 py-8">
+        
+        {/* Phase 1 Card */}
+        <div className="space-y-6 p-6 border border-zinc-800 bg-zinc-950/40 backdrop-blur-xs relative group hover:border-zinc-700 transition-all duration-300">
+          <div className="absolute -top-3 left-4 bg-[#080808] px-3 font-mono text-[8px] text-zinc-400 tracking-widest uppercase border border-zinc-800">
+            Phase 1
+          </div>
+          <h3 className="font-serif text-lg text-white font-medium leading-tight">
+            Bootstrapping & Infrastructure
+          </h3>
+          <span className="font-mono text-[8px] text-emerald-400 tracking-widest uppercase block">[Active State]</span>
+          <div className="w-full h-[1px] bg-zinc-800"></div>
+          <ul className="space-y-4 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Unified Governance</span>
+              <p className="leading-relaxed text-zinc-400">The roles of CEO and CIO are temporarily held by a single entity to maximize operational agility. The corporate structure is engineered to immediately decouple these roles as the firm scales.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Prop Execution</span>
+              <p className="leading-relaxed text-zinc-400">Joveyra executes a broad deployment of systematic spot-market strategies across Tier-1 prop firms to secure early operational cash flow.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Data Integration</span>
+              <p className="leading-relaxed text-zinc-400">The technical team executes the immediate ingestion of ultra-precise, raw Tick-by-Tick and Level 2/Level 3 data for microstructure modeling.</p>
+            </li>
+          </ul>
+        </div>
+
+        {/* Phase 2 Card */}
+        <div className="space-y-6 p-6 border border-zinc-800 bg-zinc-950/40 backdrop-blur-xs relative group hover:border-zinc-700 transition-all duration-300">
+          <div className="absolute -top-3 left-4 bg-[#080808] px-3 font-mono text-[8px] text-zinc-400 tracking-widest uppercase border border-zinc-800">
+            Phase 2
+          </div>
+          <h3 className="font-serif text-lg text-white font-medium leading-tight">
+            Offshore Institutionalization & Regulatory Setup
+          </h3>
+          <span className="font-mono text-[8px] text-zinc-500 tracking-widest uppercase block">[Queued]</span>
+          <div className="w-full h-[1px] bg-zinc-800"></div>
+          <ul className="space-y-4 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Offshore Incorporation</span>
+              <p className="leading-relaxed text-zinc-400">Joveyra formally registers the fund structure in the Cayman Islands to leverage its optimal tax-neutral status and globally recognized framework for quantitative funds.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Infrastructure Upgrade</span>
+              <p className="leading-relaxed text-zinc-400">The firm transitions its data infrastructure to institutional terminal feeds (e.g., Bloomberg/Refinitiv).</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Third-Party Safeguards</span>
+              <p className="leading-relaxed text-zinc-400">Joveyra appoints an independent Fund Administrator (for NAV calculation) and external auditors to guarantee institutional-grade transparency.</p>
+            </li>
+          </ul>
+        </div>
+
+        {/* Phase 3 Card */}
+        <div className="space-y-6 p-6 border border-zinc-800 bg-zinc-950/40 backdrop-blur-xs relative group hover:border-zinc-700 transition-all duration-300">
+          <div className="absolute -top-3 left-4 bg-[#080808] px-3 font-mono text-[8px] text-zinc-400 tracking-widest uppercase border border-zinc-800">
+            Phase 3
+          </div>
+          <h3 className="font-serif text-lg text-white font-medium leading-tight">
+            Capital Allocation & Scaling
+          </h3>
+          <span className="font-mono text-[8px] text-zinc-500 tracking-widest uppercase block">[Deployment Plan]</span>
+          <div className="w-full h-[1px] bg-zinc-800"></div>
+          <ul className="space-y-4 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Institutional Onboarding</span>
+              <p className="leading-relaxed text-zinc-400">Joveyra lists its verified track record on specialized capital allocation and digital introduction platforms.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">AUM Expansion</span>
+              <p className="leading-relaxed text-zinc-400">Management opens the Cayman structure to institutional allocators, family offices, and high-net-worth individuals (HNWIs) for large-scale capital deployment.</p>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    )
+  },
+  {
+    id: "section-3",
+    title: "Section 3: Organizational Structure (The Multi-Manager Pod Model)",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 py-8 items-stretch">
+        
+        {/* Left Column Description */}
+        <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
+          <div className="space-y-4">
+            <span className="font-mono text-[9px] text-zinc-400 tracking-[0.3em] block uppercase">ISOLATED DECENTRALIZATION</span>
+            <p className="text-zinc-300 text-sm font-light leading-relaxed font-sans">
+              Joveyra operates on a decentralized Pod Structure to isolate risk, ensuring that the decay of a single strategy never compromises the entire fund.
+            </p>
+          </div>
+          
+          <div className="space-y-3 pt-6 border-t border-zinc-800">
+            <h4 className="font-serif text-lg text-white font-medium">Quantitative Researchers</h4>
+            <span className="font-mono text-[8px] text-zinc-400 tracking-widest uppercase">[The Mathematicians]</span>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              This unit focuses entirely on mathematical formulation, statistical anomalies, and data preprocessing. The team utilizes Fractional Differentiation to maintain time-series memory and The Triple Barrier Method for rigorous data labeling. Researchers do not write production code.
+            </p>
+          </div>
+        </div>
+
+        {/* Middle Flow Diagram with symmetrical vectors */}
+        <div className="lg:col-span-4 flex flex-col justify-center items-center py-6 relative">
+          <div className="w-full border border-zinc-800 bg-black/50 backdrop-blur-sm rounded-sm p-4 space-y-4 relative z-10 font-mono text-[9px]">
+            <div className="border border-emerald-500/30 bg-emerald-950/20 p-3 text-center text-emerald-300 uppercase tracking-widest relative">
+              <span className="absolute top-1 left-2 text-[7px] text-emerald-500">[MAIN_CONTROL]</span>
+              Central Risk Overlay
+            </div>
+
+            <div className="flex justify-center">
+              <svg width="12" height="20" viewBox="0 0 12 20" fill="none" className="text-zinc-500 animate-pulse">
+                <path d="M6 0v20M6 20l-4-4M6 20l4-4" stroke="currentColor" strokeWidth="1"/>
+              </svg>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="border border-zinc-800 bg-zinc-950/80 p-3 text-center text-zinc-300 relative">
+                <span className="absolute top-1 left-1.5 text-[6px] text-zinc-500">POD_01</span>
+                <span className="font-serif block text-xs mt-1 text-white">Alpha Res</span>
+                <div className="h-[1px] bg-zinc-800 my-2"></div>
+                <span className="font-sans block text-[9px] text-zinc-400">Prod Dev</span>
+                <div className="text-[7px] text-zinc-500 mt-2">API Exec</div>
+              </div>
+              
+              <div className="border border-zinc-800 bg-zinc-950/80 p-3 text-center text-zinc-300 relative">
+                <span className="absolute top-1 left-1.5 text-[6px] text-zinc-500">POD_02</span>
+                <span className="font-serif block text-xs mt-1 text-white">Alpha Res</span>
+                <div className="h-[1px] bg-zinc-800 my-2"></div>
+                <span className="font-sans block text-[9px] text-zinc-400">Prod Dev</span>
+                <div className="text-[7px] text-zinc-500 mt-2">API Exec</div>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <svg width="12" height="20" viewBox="0 0 12 20" fill="none" className="text-zinc-500">
+                <path d="M6 0v20M6 20l-4-4M6 20l4-4" stroke="currentColor" strokeWidth="1"/>
+              </svg>
+            </div>
+
+            <div className="border border-rose-500/30 bg-rose-950/20 p-2.5 text-center text-rose-300 uppercase tracking-widest relative">
+              Alpha Decay Threshold
+            </div>
+          </div>
+          
+          <div className="absolute inset-y-0 left-1/2 w-[1px] bg-zinc-800 -z-0"></div>
+        </div>
+
+        {/* Right Column Description */}
+        <div className="lg:col-span-4 flex flex-col justify-between space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <div className="space-y-3">
+            <h4 className="font-serif text-lg text-white font-medium">Quantitative Developers</h4>
+            <span className="font-mono text-[8px] text-zinc-400 tracking-widest uppercase">[The Programmers]</span>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              This unit is responsible for translating mathematical models into ultra-fast, optimized production code (C++/Python), maintaining tick data pipelines, and ensuring robust API connectivity.
+            </p>
+          </div>
+          
+          <div className="space-y-3 pt-6 border-t border-zinc-800">
+            <h4 className="font-serif text-lg text-white font-medium">Alpha Decay Management</h4>
+            <span className="font-mono text-[8px] text-zinc-400 tracking-widest uppercase">[Mitigation Layer]</span>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              Joveyra's central system monitors the risk-adjusted return of each independent pod. If an alpha model begins to decay and falls below a strict mathematical threshold, the system triggers Linear Capital Throttling, systematically reducing its capital allocation and shifting resources back to the R&D pipeline.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    )
+  },
+  {
+    id: "section-4",
+    title: "Section 4: Ex-Ante (Predictive) Risk Management Framework",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start py-8">
+        <div className="lg:col-span-4 space-y-4">
+          <div className="font-mono text-[9px] text-zinc-400 tracking-[0.4em] uppercase">RISK MITIGATION</div>
+          <h2 className="font-serif text-3xl md:text-4xl text-white font-light leading-tight">
+            Ex-Ante Architecture
+          </h2>
+          <div className="w-16 h-[1px] bg-zinc-700 my-6"></div>
+          <p className="font-serif italic text-sm text-zinc-300 leading-relaxed">
+            Predictive, mathematical models running structural protocols to prevent drawdowns prior to inception.
+          </p>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <h3 className="font-mono text-[10px] text-zinc-200 tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 4.1 Market Risk Overlays
+          </h3>
+          <ul className="space-y-6 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Dynamic Volatility Targeting</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">The central risk engine calculates real-time market volatility via tick data. As market volatility spikes, the system automatically scales down position sizes to keep total dollar-risk constant.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Mathematical Time-Stops</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Positions that do not hit their statistical targets within a predefined algorithmic time window are classified as "stale alpha" and are automatically liquidated by the central system to prevent capital lock-up.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Statistical Drift Monitoring</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Real-time trading behavior is constantly cross-referenced with backtest probability distributions. Any significant statistical drift results in the immediate, automated isolation of the offending pod.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <h3 className="font-mono text-[10px] text-zinc-200 tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> 4.2 Counterparty & IP Protection (Phase 1 Specific)
+          </h3>
+          <ul className="space-y-6 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Multi-Prop Diversification</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Joveyra distributes capital and accounts across at least three independent Tier-1 prop providers to eliminate single-counterparty risk.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">IP Isolation</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Core alpha logic and algorithms are never deployed on third-party prop servers. All models run on Joveyra’s encrypted, private cloud servers, sending only final, automated execution signals via secure APIs.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: "section-5",
+    title: "Section 5: Core Technology Stack & Infrastructure (Phase 1)",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start py-8">
+        
+        <div className="lg:col-span-4 space-y-4">
+          <div className="font-mono text-[9px] text-zinc-400 tracking-[0.4em] uppercase font-light">INFRASTRUCTURE</div>
+          <h2 className="font-serif text-3xl md:text-4xl text-white font-light leading-tight">
+            Supercharged Compute
+          </h2>
+          <div className="w-16 h-[1px] bg-zinc-700 my-6"></div>
+          <p className="font-serif italic text-sm text-zinc-300 leading-relaxed">
+            Bypassing premium legacy licenses in favor of distributed raw pipeline architectures and deep mathematical hardware arrays.
+          </p>
+        </div>
+
+        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 lg:border-l lg:border-zinc-850 lg:pl-12">
+          
+          <div className="space-y-1.5">
+            <span className="font-mono text-[8px] text-zinc-500 tracking-widest block uppercase">[01 // RAW STORAGE]</span>
+            <h4 className="font-serif text-lg text-zinc-200 font-medium">Data Architecture</h4>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              Utilizes ClickHouse / Arctic (by Man Group) / HDF5 for ultra-fast, zero-latency querying and compressed storage of billions of rows of raw Level 2 and Level 3 (Order Book Depth) tick data.
+            </p>
+          </div>
+          
+          <div className="space-y-1.5">
+            <span className="font-mono text-[8px] text-zinc-500 tracking-widest block uppercase">[02 // PARALLEL PROCESSING]</span>
+            <h4 className="font-serif text-lg text-zinc-200 font-medium">HPC & Distributed Compute</h4>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              Implements Ray / Dask / NVIDIA CUDA to distribute heavy backtesting and machine learning workloads across multi-core CPU/GPU clusters, reducing optimization times from days to hours.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <span className="font-mono text-[8px] text-zinc-500 tracking-widest block uppercase">[03 // OPTIMIZATION]</span>
+            <h4 className="font-serif text-lg text-zinc-200 font-medium">Research & ML Engine</h4>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              Deploys Python (PyTorch, JAX, Scikit-Learn) for advanced statistical modeling and machine learning training.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <span className="font-mono text-[8px] text-zinc-500 tracking-widest block uppercase">[04 // LATENCY LAYER]</span>
+            <h4 className="font-serif text-lg text-zinc-200 font-medium">Execution Layer</h4>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              Uses a C++ Core / Python Asyncio framework for low-latency order flow ingestion and rapid signal execution.
+            </p>
+          </div>
+
+          <div className="md:col-span-2 pt-6 border-t border-zinc-800 space-y-1.5">
+            <span className="font-mono text-[8px] text-zinc-500 tracking-widest block uppercase">[05 // PHYSICAL NODES]</span>
+            <h4 className="font-serif text-lg text-zinc-200 font-medium">Infrastructure & Proximity</h4>
+            <p className="text-zinc-400 text-xs font-light leading-relaxed font-sans">
+              Employs a hybrid setup using On-Premise GPU Workstations for local R&D, paired with AWS/GCP HPC Spot Instances for scalable training. Trading engines are deployed via Dedicated VPS Co-locations in London/Frankfurt/New York to minimize ping latency to prop gateways.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    )
+  },
+  {
+    id: "section-6",
+    title: "Section 6: Investor Protections & Legal Compliance",
+    content: (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start py-8">
+        
+        <div className="lg:col-span-4 space-y-4">
+          <div className="font-mono text-[9px] text-zinc-400 tracking-[0.4em] uppercase font-light">REGULATORY PROTOCOL</div>
+          <h2 className="font-serif text-3xl md:text-4xl text-white font-light leading-tight">
+            Security Alignment
+          </h2>
+          <div className="w-16 h-[1px] bg-zinc-700 my-6"></div>
+          <p className="font-serif italic text-sm text-zinc-300 leading-relaxed">
+            Structuring legal covenants to ensure corporate fidelity and risk synchronization between all allocators.
+          </p>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <h3 className="font-mono text-[10px] text-zinc-200 tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> 6.1 Alignment of Interests
+          </h3>
+          <ul className="space-y-6 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">High-Water Mark (HWM)</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Performance fees are strictly conditional. If the fund experiences a valuation dip, no performance fees are charged until the previous absolute peak NAV is fully recovered and surpassed.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Hurdle Rate</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Performance fees are only calculated on net new profits that exceed a benchmark hurdle rate (e.g., SOFR/Risk-Free Rate), ensuring investors only pay for true alpha.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6 lg:border-l lg:border-zinc-850 lg:pl-8">
+          <h3 className="font-mono text-[10px] text-zinc-200 tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full"></span> 6.2 Legal & Compliance Roadmap
+          </h3>
+          <ul className="space-y-6 text-xs font-light text-zinc-300">
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Pre-Exit Phase</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Permanent domestic legal counsel is retained by Joveyra to structure all early operations, cross-border asset management, IP protection, and compliance frameworks prior to international transition.</p>
+            </li>
+            <li className="space-y-1">
+              <span className="font-mono text-[9px] text-white uppercase tracking-wider block">Post-Exit Phase</span>
+              <p className="leading-relaxed text-zinc-400 font-sans">Joveyra retains premier offshore legal counsels (Cayman-based) to ensure flawless compliance with international Anti-Money Laundering (AML), Know Your Customer (KYC), and global financial regulatory standards.</p>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    )
+  }
+];
+
+const JOVEYRA_CONTEXT = `
+JOVEYRA QUANTITATIVE HEDGE FUND
+Core Identity: 100% systematic, data-driven quantitative trading firm. Entire pipeline automated (alpha generation, backtesting, risk management, execution). No emotional human bias.
+Prop-to-Fund Capital Bridge: Phase 1 deploys models across institutional prop-trading firms in the spot market to generate low-risk cash flow, funding legal structure without diluting early equity.
+Roadmap - Phase 1: Bootstrapping & Infrastructure. Unified governance (CEO/CIO merged temporarily). Prop Execution across Tier-1 firms. Data Integration of raw tick/Level 2/3 data.
+Roadmap - Phase 2: Offshore Institutionalization. Cayman Islands incorporation. Infrastructure upgrade to Bloomberg/Refinitiv. Independent Fund Administrator and auditors.
+Roadmap - Phase 3: Capital Allocation. Institutional onboarding and AUM expansion to allocators, family offices, HNWIs.
+Structure (Pod Model): Decentralized to isolate risk. Quant Researchers focus on math, statistical anomalies, Fractional Differentiation, Triple Barrier Method. Quant Developers translate math to C++/Python. Alpha Decay Management uses Linear Capital Throttling.
+Risk Management (Ex-Ante): Dynamic Volatility Targeting (scales down positions if volatility spikes). Mathematical Time-Stops (liquidates stale alpha). Statistical Drift Monitoring. Multi-Prop Diversification (Phase 1). IP Isolation (models run on Joveyra private cloud).
+Tech Stack: ClickHouse/Arctic/HDF5 for data. Ray/Dask/NVIDIA CUDA for HPC. Python (PyTorch/JAX) for ML. C++ Core/Python for Execution. Hybrid On-Prem GPU + AWS/GCP spot instances.
+Compliance: High-Water Mark (HWM) and Hurdle Rate for performance fees. Pre-Exit phase uses domestic counsel. Post-Exit uses Cayman-based counsel for AML/KYC.
+`;
+
+export default function App() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  
+  // Layout views: 'deck' (slide presentation) or 'editorial' (all sections continuous scrolling)
+  const [viewMode, setViewMode] = useState('deck'); 
+
+  // AI Chat state
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [inputText, setInputText] = useState("");
+  const [chatHistory, setChatHistory] = useState([
+    { role: "model", parts: [{ text: "I am the Joveyra Investor Relations AI. How may I assist you with details regarding our quantitative methodologies, roadmap, or fund structure?" }] }
+  ]);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  // Background mathematical canvas Ref
+  const canvasRef = useRef(null);
+
+  // Minimum swipe distance
+  const minSwipeDistance = 50;
+
+  // Font Injection
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@100;200;300;400&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .font-serif { font-family: 'Playfair Display', serif; }
+      .font-sans { font-family: 'Inter', sans-serif; }
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
+      body { background-color: #040404; margin: 0; overflow-x: hidden; }
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(link);
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  // HTML5 dynamic wave animations reflecting optimization boundary grids with enhanced bright accents
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationId;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    let tick = 0;
+    const draw = () => {
+      tick += 0.0015; // slightly faster animation
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Fine-grained mathematical coordinate lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.012)'; // brighter coordinate grid
+      ctx.lineWidth = 1;
+      
+      const gridSpacing = 80;
+      for (let x = 0; x < canvas.width; x += gridSpacing) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSpacing) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Elegant shifting light trails (Brighter Mathematical Alpha Frontier)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)'; // brighter frontier waves
+      ctx.lineWidth = 1.0;
+      const waveCount = 5;
+      
+      for (let i = 0; i < waveCount; i++) {
+        ctx.beginPath();
+        const baseOffset = i * 45;
+        for (let x = 0; x < canvas.width; x += 15) {
+          const y = (canvas.height * 0.5) + 
+                    Math.sin(x * 0.0015 + tick + i * 0.7) * 150 * Math.cos(tick * 0.1 + i * 0.2) +
+                    Math.cos(x * 0.0008 - tick * 0.4) * 80;
+          if (x === 0) {
+            ctx.moveTo(x, y + baseOffset);
+          } else {
+            ctx.lineTo(x, y + baseOffset);
+          }
+        }
+        ctx.stroke();
+      }
+
+      animationId = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, []);
+
+  const goNext = useCallback(() => {
+    if (viewMode === 'deck') {
+      setCurrentIndex((prev) => (prev === sections.length - 1 ? prev : prev + 1));
+    }
+  }, [viewMode]);
+
+  const goPrev = useCallback(() => {
+    if (viewMode === 'deck') {
+      setCurrentIndex((prev) => (prev === 0 ? prev : prev - 1));
+    }
+  }, [viewMode]);
+
+  // Handle arrow keys for Deck presentation view
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (viewMode !== 'deck') return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goPrev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goNext, goPrev, viewMode]);
+
+  // Touch swiping triggers
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd || viewMode !== 'deck') return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) goNext();
+    if (isRightSwipe) goPrev();
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!inputText.trim()) return;
+
+    const newUserMsg = { role: "user", parts: [{ text: inputText }] };
+    const updatedHistory = [...chatHistory, newUserMsg];
+    
+    setChatHistory(updatedHistory);
+    setInputText("");
+    setIsAiLoading(true);
+
+    try {
+      const apiKey = ""; 
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+      
+      const payload = {
+        contents: updatedHistory,
+        systemInstruction: {
+          parts: [{ text: `Act as the highly technical, elite, and objective Investor Relations AI for Joveyra Quantitative Hedge Fund. Answer investor inquiries strictly based on Joveyra context details. If asked queries outside the document structure, politely decline and steer focus back to the multi-manager structure, execution layer, or algorithmic risk overlays. Format replies cleanly. Context:\n${JOVEYRA_CONTEXT}` }]
+        }
+      };
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      const responseText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (responseText) {
+        setChatHistory(prev => [...prev, { role: "model", parts: [{ text: responseText }] }]);
+      } else {
+        throw new Error("No response body returned.");
+      }
+    } catch (error) {
+      console.error(error);
+      setChatHistory(prev => [...prev, { role: "model", parts: [{ text: "Infrastructure offline. Please retry connection." }] }]);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
+
+  return (
+    <div 
+      className="relative w-screen h-screen bg-[#040404] text-zinc-300 overflow-hidden font-sans selection:bg-zinc-800 selection:text-white"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Background Math Grid Canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />
+
+      {/* Brighter Dynamic Ambient Background Lights (Gradianted Glow Overlay) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-[15%] left-[8%] w-[45vw] h-[45vw] bg-zinc-700/20 rounded-full filter blur-[120px] animate-[pulse_12s_infinite_alternate]"></div>
+        <div className="absolute bottom-[15%] right-[8%] w-[50vw] h-[50vw] bg-zinc-800/25 rounded-full filter blur-[140px] animate-[pulse_18s_infinite_alternate-reverse]"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vw] bg-zinc-650/15 rounded-full filter blur-[110px] animate-pulse"></div>
+      </div>
+
+      {/* SVG Grain Noise Filter */}
+      <svg className="pointer-events-none absolute inset-0 z-40 opacity-[0.07] mix-blend-overlay w-full h-full">
+        <filter id="noiseFilter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.80" numOctaves="4" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+      </svg>
+
+      {/* Symmetrical Grid Outlines */}
+      <div className="absolute inset-x-6 md:inset-x-16 top-16 bottom-16 border border-white/[0.04] pointer-events-none z-0">
+        {/* Symmetric Crosshair ticks */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono text-zinc-700 text-sm font-light select-none">
+          +
+        </div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[1px] bg-white/[0.025]"></div>
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1px] bg-white/[0.025]"></div>
+
+        {/* Framing corner markers */}
+        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-600 -translate-x-[1px] -translate-y-[1px]"></div>
+        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-600 translate-x-[1px] -translate-y-[1px]"></div>
+        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-zinc-600 -translate-x-[1px] translate-y-[1px]"></div>
+        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-zinc-600 translate-x-[1px] translate-y-[1px]"></div>
+        
+        {/* Monospace Metadata Coordinate Labels */}
+        <div className="absolute top-2 left-3 font-mono text-[7.5px] text-zinc-500 tracking-widest uppercase hidden md:block">
+          SYS_NODE // GMT_REQD
+        </div>
+        <div className="absolute top-2 right-3 font-mono text-[7.5px] text-zinc-500 tracking-widest uppercase hidden md:block text-right">
+          LAT_EST // COORD_X4
+        </div>
+      </div>
+
+      {/* Interface Wrapper */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-between px-10 md:px-24 py-20">
+        
+        {/* Header Space */}
+        <div className="w-full flex justify-between items-center h-8 z-20">
+          <div className="font-mono text-[9px] tracking-[0.25em] text-zinc-400 uppercase flex items-center gap-3">
+            <span className="font-bold text-white tracking-[0.3em]">JOVEYRA</span>
+            <span className="text-zinc-700">|</span>
+            <span className="text-zinc-300 font-light">{viewMode === 'deck' ? "DEC_PRESENTATION" : "EDITORIAL_FULL_VIEW"}</span>
+          </div>
+
+          {/* Toggle View Mode for Ultimate Access and Readability */}
+          <div className="flex bg-zinc-950/80 border border-zinc-800 p-0.5 rounded-sm">
+            <button 
+              onClick={() => setViewMode('deck')}
+              className={`px-3 py-1 flex items-center gap-1.5 text-[8.5px] font-mono uppercase tracking-wider transition-all rounded-xs ${viewMode === 'deck' ? 'bg-zinc-800 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+              title="Switch to Slide Presentation"
+            >
+              <ViewGridIcon />
+              <span>Deck View</span>
+            </button>
+            <button 
+              onClick={() => setViewMode('editorial')}
+              className={`px-3 py-1 flex items-center gap-1.5 text-[8.5px] font-mono uppercase tracking-wider transition-all rounded-xs ${viewMode === 'editorial' ? 'bg-zinc-800 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+              title="Switch to Continuous Scroll (Easy Reading/Sharing)"
+            >
+              <ViewListIcon />
+              <span>Full Scroll View</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Editorial Content Frame */}
+        <div className="flex-1 w-full my-6 overflow-y-auto scrollbar-hide pr-1">
+          {viewMode === 'deck' ? (
+            /* Slide Deck Interactive Panel */
+            <div className="h-full flex flex-col justify-center">
+              {sections[currentIndex].title && currentIndex > 0 && (
+                <div className="mb-6 border-b border-zinc-850 pb-3">
+                  <span className="font-mono text-[8px] text-zinc-400 tracking-[0.4em] uppercase block mb-0.5">
+                    SPEC_MEMORANDUM_ {String(currentIndex).padStart(2, '0')}
+                  </span>
+                  <h2 className="font-serif text-2xl md:text-3xl text-zinc-100 font-light leading-none">
+                    {sections[currentIndex].title}
+                  </h2>
+                </div>
+              )}
+              <div className="transition-all duration-300 ease-in-out">
+                {sections[currentIndex].content}
+              </div>
+            </div>
+          ) : (
+            /* Continuous Editorial Layout */
+            <div className="space-y-24 py-16 max-w-5xl mx-auto">
+              {sections.map((sec, idx) => (
+                <div key={sec.id} className="border-b border-zinc-850 pb-16 relative">
+                  <div className="absolute -top-6 left-0 font-mono text-[8px] text-zinc-500 tracking-[0.3em] uppercase">
+                    SEGMENT_ {String(idx).padStart(2, '0')}
+                  </div>
+                  {idx > 0 && (
+                    <h2 className="font-serif text-2xl md:text-3xl text-white font-light tracking-tight mb-8">
+                      {sec.title}
+                    </h2>
+                  )}
+                  <div className="w-full">
+                    {sec.content}
+                  </div>
+                </div>
+              ))}
+              
+              <div className="py-12 text-center">
+                <p className="font-serif italic text-zinc-450 text-sm">End of Document. Structured dynamically under continuous systematic revision.</p>
+                <div className="font-mono text-[8px] text-zinc-600 tracking-widest mt-2">© JOVEYRA QUANTITATIVE HEDGE FUND ALL RIGHTS RESERVED</div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Symmetric Footer Panel */}
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-5 border-t border-zinc-850">
+          
+          <div className="flex flex-col gap-1 font-mono text-[8.5px] text-zinc-450 uppercase tracking-widest">
+            <span className="text-zinc-500">INFRASTRUCTURE LOG</span>
+            <span className="text-zinc-200 font-medium">
+              {viewMode === 'deck' ? `SLIDE ${String(currentIndex + 1).padStart(2, '0')} / ${String(sections.length).padStart(2, '0')}` : "SCROLL_ACTIVE_PORT"}
+            </span>
+          </div>
+
+          {/* Symmetrical Mini Indicator Dials */}
+          {viewMode === 'deck' && (
+            <div className="flex items-center gap-1.5">
+              {sections.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`h-1 transition-all duration-500 ${idx === currentIndex ? 'w-8 bg-zinc-200' : 'w-1.5 bg-zinc-800 hover:bg-zinc-650'}`}
+                  aria-label={`Show section ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Universal Footer Controls */}
+          <div className="flex items-center gap-4">
+            {viewMode === 'deck' && (
+              <button 
+                onClick={goPrev} 
+                disabled={currentIndex === 0}
+                className="p-3 bg-zinc-950/60 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 disabled:opacity-0 transition-all duration-300 rounded-xs flex items-center justify-center"
+              >
+                <ArrowLeft />
+              </button>
+            )}
+
+            {/* AI Assistant Node Drawer Trigger */}
+            <button 
+              onClick={() => setIsChatOpen(true)}
+              className="px-4 py-3 bg-zinc-950/60 border border-zinc-800 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all duration-300 flex items-center gap-2 text-[9px] font-mono tracking-widest uppercase rounded-xs"
+            >
+              <SparkleIcon />
+              <span>IR Terminal</span>
+            </button>
+
+            {viewMode === 'deck' && (
+              <button 
+                onClick={goNext} 
+                disabled={currentIndex === sections.length - 1}
+                className="p-3 bg-zinc-950/60 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 disabled:opacity-0 transition-all duration-300 rounded-xs flex items-center justify-center"
+              >
+                <ArrowRight />
+              </button>
+            )}
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* AI Assistant Sidebar */}
+      <div className={`fixed top-0 right-0 h-full w-full md:w-[420px] bg-[#050505]/95 backdrop-blur-2xl border-l border-white/[0.05] z-50 transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl ${isChatOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        
+        {/* Drawer Header */}
+        <div className="flex items-center justify-between p-6 border-b border-zinc-850">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xs bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-300">
+              <SparkleIcon />
+            </div>
+            <div>
+              <h4 className="font-mono text-zinc-200 text-xs tracking-widest uppercase">JOVEYRA AI</h4>
+              <p className="text-[8.5px] text-zinc-400 tracking-wider uppercase font-mono mt-0.5">IR Systematic Node</p>
+            </div>
+          </div>
+          <button onClick={() => setIsChatOpen(false)} className="text-zinc-400 hover:text-white transition-colors p-1">
+            <CloseIcon />
+          </button>
+        </div>
+
+        {/* Message Container */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide flex flex-col">
+          {chatHistory.map((msg, idx) => (
+            <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[90%] p-4 text-xs font-light leading-relaxed ${msg.role === 'user' ? 'bg-zinc-950 border border-zinc-800 text-zinc-300 rounded-xs' : 'bg-transparent text-zinc-300 border-l border-zinc-800 pl-4'}`}>
+                {msg.role === 'user' ? (
+                  <span className="font-mono text-[8px] text-zinc-500 block uppercase mb-1">Inquiry:</span>
+                ) : (
+                  <span className="font-mono text-[8px] text-zinc-500 block uppercase mb-1">Inference:</span>
+                )}
+                {msg.parts[0].text}
+              </div>
+            </div>
+          ))}
+          {isAiLoading && (
+            <div className="flex w-full justify-start">
+              <div className="bg-transparent border-l border-zinc-800 pl-4 py-2 flex items-center gap-2">
+                <span className="font-mono text-[8px] text-zinc-500 uppercase tracking-widest animate-pulse">Computing Alpha Inference Core...</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Terminal Input Block */}
+        <div className="p-4 border-t border-zinc-850 bg-[#070707]/90">
+          <form onSubmit={handleSendMessage} className="relative flex items-center">
+            <input 
+              type="text" 
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Query systematic fund structures..."
+              className="w-full bg-zinc-950/80 border border-zinc-800 rounded-sm py-3 px-4 pr-12 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-700 focus:ring-0 transition-all font-mono"
+            />
+            <button 
+              type="submit" 
+              disabled={!inputText.trim() || isAiLoading}
+              className="absolute right-2 p-2 text-zinc-400 hover:text-zinc-200 disabled:opacity-30 transition-colors"
+              aria-label="Submit"
+            >
+              <SendIcon />
+            </button>
+          </form>
+          <div className="mt-2 text-[8px] font-mono text-zinc-500 uppercase tracking-wider text-center">
+            Systemic IR Terminal v3.2 // Secure Session
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+}
