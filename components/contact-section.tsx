@@ -2,87 +2,77 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { PolarWatermark } from "./watermarks";
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section id="contact" className="relative border-t border-border px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          <p className="mb-6 font-display text-[0.7rem] tracking-luxe text-accent/70">[05]</p>
-          <h2 className="max-w-xl font-display text-2xl font-600 leading-tight text-balance text-foreground sm:text-3xl md:text-4xl">
-            CONTACT
-          </h2>
-          <p className="mt-8 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            For formal institutional inquiries:{" "}
-            <a
-              href="mailto:communications@joveyra.com"
-              className="text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-accent"
-            >
-              communications@joveyra.com
-            </a>
-            . Structural overviews are available upon credential authentication.
-          </p>
-        </motion.div>
+    <section
+      id="contact"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-8 py-32"
+    >
+      <div className="watermark-grid" aria-hidden />
+      <PolarWatermark />
 
-        <motion.form
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.15 }}
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-120px" }}
+        transition={{ duration: 1.1, ease: "easeOut" }}
+        className="relative z-10 flex w-full max-w-2xl flex-col items-center text-center"
+      >
+        <span className="mb-8 font-mono text-[0.62rem] uppercase tracking-[0.32em] text-accent/60">
+          [05] — Contact
+        </span>
+        <h2 className="font-display text-3xl font-700 uppercase leading-tight tracking-[0.12em] text-balance text-foreground sm:text-4xl md:text-5xl">
+          Portal
+        </h2>
+        <p className="mt-12 max-w-xl text-pretty text-lg leading-loose text-muted-foreground md:text-xl">
+          For formal institutional inquiries:{" "}
+          <a
+            href="mailto:communications@joveyra.com"
+            className="text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-accent"
+          >
+            communications@joveyra.com
+          </a>
+          . Structural overviews are available upon credential authentication.
+        </p>
+
+        <form
           onSubmit={(e) => {
             e.preventDefault();
             setSubmitted(true);
           }}
-          className="mt-16 grid max-w-3xl gap-px overflow-hidden border border-border bg-border md:grid-cols-2"
+          className="mt-16 flex w-full max-w-md flex-col gap-8 text-left"
         >
-          <Field label="FULL NAME" name="name" placeholder="Institutional contact" />
-          <Field label="ORGANIZATION" name="org" placeholder="Entity name" />
-          <Field label="EMAIL" name="email" type="email" placeholder="name@institution.com" />
-          <Field label="CREDENTIAL ID" name="cred" placeholder="Optional" required={false} />
+          <Field label="Email" name="email" type="email" placeholder="name@institution.com" />
+          <Field label="Credentials" name="cred" placeholder="Credential identifier" />
 
-          <div className="bg-card p-6 md:col-span-2">
-            <label className="font-display text-[0.62rem] tracking-luxe text-muted-foreground">
-              INQUIRY
-            </label>
-            <textarea
-              name="message"
-              rows={4}
-              required
-              placeholder="Describe the nature of your formal inquiry."
-              className="mt-3 w-full resize-none bg-transparent font-serif text-base text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+          <button
+            type="submit"
+            disabled={submitted}
+            className="group relative mt-2 inline-flex items-center justify-center gap-3 overflow-hidden border border-border px-8 py-4 font-mono text-[0.64rem] uppercase tracking-[0.28em] text-foreground transition-all duration-500 hover:border-accent disabled:opacity-50"
+          >
+            <span
+              className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={{
+                background:
+                  "radial-gradient(120% 120% at 50% 50%, rgba(196,205,218,0.18) 0%, transparent 70%)",
+              }}
             />
-          </div>
-
-          <div className="flex items-center justify-between gap-4 bg-card p-6 md:col-span-2">
-            <span className="font-display text-[0.6rem] tracking-[0.2em] text-muted-foreground">
-              {submitted
-                ? "RECEIVED — AWAITING CREDENTIAL AUTHENTICATION"
-                : "TRANSMITTED UNDER STRICT CONFIDENTIALITY"}
+            <span className="relative z-10">
+              {submitted ? "Request Received" : "Request Authentication"}
             </span>
-            <button
-              type="submit"
-              disabled={submitted}
-              className="group relative inline-flex items-center gap-3 overflow-hidden border border-border px-7 py-3 font-display text-[0.68rem] tracking-luxe text-foreground transition-all duration-500 hover:border-accent disabled:opacity-50"
-            >
-              <span
-                className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                  background:
-                    "radial-gradient(120% 120% at 50% 50%, rgba(196,205,218,0.16) 0%, transparent 70%)",
-                }}
-              />
-              <span className="relative z-10">{submitted ? "SUBMITTED" : "SUBMIT INQUIRY"}</span>
-            </button>
-          </div>
-        </motion.form>
-      </div>
+          </button>
+
+          <p className="text-center font-mono text-[0.56rem] uppercase tracking-[0.26em] text-muted-foreground/60">
+            {submitted
+              ? "Transmitted · Awaiting credential authentication"
+              : "Transmitted under strict confidentiality"}
+          </p>
+        </form>
+      </motion.div>
     </section>
   );
 }
@@ -92,25 +82,27 @@ function Field({
   name,
   type = "text",
   placeholder,
-  required = true,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
-  required?: boolean;
 }) {
   return (
-    <div className="bg-card p-6">
-      <label className="font-display text-[0.62rem] tracking-luxe text-muted-foreground">
+    <div className="flex flex-col gap-3">
+      <label
+        htmlFor={name}
+        className="font-mono text-[0.58rem] uppercase tracking-[0.26em] text-muted-foreground"
+      >
         {label}
       </label>
       <input
+        id={name}
         type={type}
         name={name}
-        required={required}
+        required
         placeholder={placeholder}
-        className="mt-3 w-full bg-transparent font-serif text-base text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+        className="w-full border-b border-border bg-transparent pb-2 font-serif text-base text-foreground placeholder:text-muted-foreground/40 transition-colors duration-300 focus:border-accent focus:outline-none"
       />
     </div>
   );

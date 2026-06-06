@@ -1,81 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { Monogram } from "./monogram";
 
 const LINKS = [
-  { id: "manifesto", label: "01 — Manifesto" },
-  { id: "architecture", label: "02 — Architecture" },
-  { id: "rigor", label: "03 — Empirical Rigor" },
-  { id: "capital", label: "04 — Intellectual Capital" },
-  { id: "contact", label: "05 — Contact" },
+  { id: "manifesto", label: "[01] MANIFESTO" },
+  { id: "architecture", label: "[02] ARCHITECTURE" },
+  { id: "rigor", label: "[03] RIGOR" },
+  { id: "capital", label: "[04] CAPITAL" },
+  { id: "contact", label: "[05] PORTAL" },
 ];
 
 export function SiteNav() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${
-        scrolled ? "border-b border-border bg-background/70 backdrop-blur-xl" : "bg-transparent"
-      }`}
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
-        <a href="#top" className="group flex items-center gap-3">
-          <span className="flex h-7 w-7 items-center justify-center border border-border">
-            <span className="h-2 w-2 bg-accent transition-transform duration-500 group-hover:rotate-45" />
-          </span>
-          <span className="font-display text-sm font-600 tracking-luxe text-foreground">
+    <>
+      <header className="fixed left-1/2 top-6 z-50 flex -translate-x-1/2 items-center gap-8 rounded-full border border-white/[0.05] bg-black/35 px-6 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-md">
+        <a href="#top" className="group flex items-center gap-2.5">
+          <Monogram className="h-7 w-7" />
+          <span className="font-display text-[0.8rem] font-600 tracking-[0.24em] text-foreground">
             JOVEYRA
           </span>
         </a>
 
-        <ul className="hidden items-center gap-9 lg:flex">
+        <span className="hidden h-4 w-px bg-white/10 lg:block" />
+
+        <ul className="hidden items-center gap-7 lg:flex">
           {LINKS.map((l) => (
             <li key={l.id}>
               <a
                 href={`#${l.id}`}
-                className="font-display text-[0.68rem] tracking-[0.22em] text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                className="group relative font-mono text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-300 hover:text-foreground"
               >
                 {l.label}
+                <span className="pointer-events-none absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent opacity-0 shadow-[0_0_8px_2px_rgba(196,205,218,0.6)] transition-opacity duration-300 group-hover:opacity-100" />
               </a>
             </li>
           ))}
         </ul>
 
-        <a
-          href="#contact"
-          className="hidden border border-border px-5 py-2 font-display text-[0.68rem] tracking-[0.22em] text-foreground transition-all duration-300 hover:border-accent hover:bg-accent/5 md:inline-block"
-        >
-          INQUIRE
-        </a>
-
         <button
-          aria-label="Toggle menu"
+          aria-label="Toggle navigation"
           onClick={() => setOpen((v) => !v)}
-          className="flex flex-col gap-1.5 lg:hidden"
+          className="text-foreground lg:hidden"
         >
-          <span className="h-px w-6 bg-foreground" />
-          <span className="h-px w-6 bg-foreground" />
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
-      </nav>
+      </header>
 
       {open && (
-        <div className="border-t border-border bg-background/95 px-6 py-6 backdrop-blur-xl lg:hidden">
+        <div className="fixed left-1/2 top-24 z-40 w-[88vw] max-w-sm -translate-x-1/2 rounded-2xl border border-white/[0.06] bg-black/80 p-6 backdrop-blur-xl lg:hidden">
           <ul className="flex flex-col gap-5">
             {LINKS.map((l) => (
               <li key={l.id}>
                 <a
                   href={`#${l.id}`}
                   onClick={() => setOpen(false)}
-                  className="font-display text-xs tracking-[0.22em] text-muted-foreground"
+                  className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {l.label}
                 </a>
@@ -84,6 +67,6 @@ export function SiteNav() {
           </ul>
         </div>
       )}
-    </header>
+    </>
   );
 }

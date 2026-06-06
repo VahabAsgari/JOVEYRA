@@ -2,56 +2,57 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { PolarWatermark, WaveWatermark } from "./watermarks";
 
 interface SectionProps {
   id: string;
   index: string;
   title: string;
   children: ReactNode;
-  visual?: ReactNode;
-  flip?: boolean;
+  watermark?: "polar" | "wave" | "none";
+  align?: "center" | "left";
 }
 
-export function Section({ id, index, title, children, visual, flip }: SectionProps) {
+export function Section({
+  id,
+  index,
+  title,
+  children,
+  watermark = "polar",
+  align = "center",
+}: SectionProps) {
   return (
     <section
       id={id}
-      className="relative border-t border-border px-6 py-28 md:px-10 md:py-36"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-8 py-32"
     >
-      <div
-        className={`mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2 lg:gap-20 ${
-          flip ? "lg:[&>*:first-child]:order-2" : ""
+      <div className="watermark-grid" aria-hidden />
+      {watermark === "polar" && <PolarWatermark />}
+      {watermark === "wave" && <WaveWatermark />}
+
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-120px" }}
+        transition={{ duration: 1.1, ease: "easeOut" }}
+        className={`relative z-10 flex w-full max-w-3xl flex-col ${
+          align === "center" ? "items-center text-center" : "items-start text-left"
         }`}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: "easeOut" }}
+        <span className="mb-8 font-mono text-[0.62rem] uppercase tracking-[0.32em] text-accent/60">
+          {index}
+        </span>
+        <h2 className="font-display text-3xl font-700 uppercase leading-tight tracking-[0.12em] text-balance text-foreground sm:text-4xl md:text-5xl">
+          {title}
+        </h2>
+        <div
+          className={`mt-12 text-pretty text-lg leading-loose text-muted-foreground md:text-xl ${
+            align === "center" ? "max-w-2xl" : "max-w-2xl"
+          }`}
         >
-          <p className="mb-6 font-display text-[0.7rem] tracking-luxe text-accent/70">
-            [{index}]
-          </p>
-          <h2 className="max-w-md font-display text-2xl font-600 leading-tight text-balance text-foreground sm:text-3xl md:text-4xl">
-            {title}
-          </h2>
-          <div className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            {children}
-          </div>
-        </motion.div>
-
-        {visual && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="relative flex items-center justify-center"
-          >
-            {visual}
-          </motion.div>
-        )}
-      </div>
+          {children}
+        </div>
+      </motion.div>
     </section>
   );
 }

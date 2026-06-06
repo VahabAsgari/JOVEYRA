@@ -17,6 +17,7 @@
 
   --font-serif: var(--font-old-standard), Georgia, "Times New Roman", serif;
   --font-display: var(--font-cinzel), "Perpetua Titling MT", Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root {
@@ -79,4 +80,17 @@ body {
 
 .tracking-luxe {
   letter-spacing: 0.28em;
+}
+
+/* Ultra-thin precision grid watermark */
+.watermark-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(120, 140, 165, 0.05) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, rgba(120, 140, 165, 0.05) 0.5px, transparent 0.5px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(ellipse 75% 60% at 50% 50%, black 0%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 50%, black 0%, transparent 85%);
 }

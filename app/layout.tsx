@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Old_Standard_TT } from "next/font/google";
+import { Cinzel, Old_Standard_TT, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -14,6 +14,13 @@ const oldStandard = Old_Standard_TT({
   weight: ["400", "700"],
   style: ["normal", "italic"],
   variable: "--font-old-standard",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -36,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${oldStandard.variable} bg-background`}
+      className={`${cinzel.variable} ${oldStandard.variable} ${jetbrainsMono.variable} bg-background`}
     >
       <body className="bg-background text-foreground antialiased">
         {children}

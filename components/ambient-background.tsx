@@ -21,7 +21,7 @@ export function AmbientBackground() {
           ],
         }}
         transition={{
-          duration: 28,
+          duration: 25,
           ease: "easeInOut",
           repeat: Infinity,
         }}
